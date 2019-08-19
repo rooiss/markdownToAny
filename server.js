@@ -20,7 +20,7 @@ app.get('/', function(req,res){
 })
 
 // route for downloading link
-app.post('/pdf', function(req,res){
+app.post('/download', function(req,res){
     const stream = new Readable;
     stream._read = () => {};
     // grabbing info from form
@@ -37,17 +37,15 @@ app.post('/pdf', function(req,res){
                 console.error('ah shit here we go again: ',err);
             }
             console.log(result);
-            return result;
         }
         nodePandoc(src, args, callback);
     } else if (formatSelect === 'HTML') {
-        args = '-f markdown -t html -o INTERWEB.html';
+        args = '-f markdown -t html';
         callback = function (err, result) {
             if (err) {
                 console.error('ah shit here we go again: ',err);
             }
             console.log(result);
-            return result;
         }
         nodePandoc(src, args, callback);
     } else if (formatSelect === 'PDF'){
@@ -56,22 +54,10 @@ app.post('/pdf', function(req,res){
         stream.push(src);
         stream.push(null);
     }
-    
-})
-
-
-// route for downloading doc
-app.post('/doc', function(req,res) {
-    res.set('Content-Disposition', 'attachment');
-    res.set('Content-Type', 'application/msword');
-})
-
-// route for downloading html
-app.post('/html', function(req,res) {
-    res.set('Content-Disposition', 'attachment');
-    res.set('Content-Type', 'text/html');
 })
 
 // what port the local host is running on
 app.listen(1337)
 console.log('listening on port 1337...')
+
+// res.end or res.send sends something to the browser res.send can send multiple times, res.end 
