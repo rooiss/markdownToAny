@@ -31,12 +31,13 @@ app.post('/download', function(req,res){
     console.log(formatSelect);
     // need to be able to choose the formatselect from the menu drop down and apply it to 
     if (formatSelect === 'DOC') {
-        args = '-f markdown -t docx -o docx.docx';
+        args = '-f markdown -t docx';
         callback = function (err, result) {
             if (err) {
                 console.error('ah shit here we go again: ',err);
             }
-            console.log(result);
+            // console.log(result);
+            res.send(result)
         }
         nodePandoc(src, args, callback);
     } else if (formatSelect === 'HTML') {
@@ -46,6 +47,7 @@ app.post('/download', function(req,res){
                 console.error('ah shit here we go again: ',err);
             }
             console.log(result);
+            res.send(result)
         }
         nodePandoc(src, args, callback);
     } else if (formatSelect === 'PDF'){
