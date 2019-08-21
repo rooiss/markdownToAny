@@ -26,18 +26,19 @@ app.post('/download', function(req,res){
     // grabbing info from form
     var src = req.body.MD;
     // need to set header to know what the file type is
-    res.setHeader('Content-Disposition', 'attachment');
+    res.set('Content-Disposition', 'attachment');
     var formatSelect = req.body.formatSelect;
     console.log(formatSelect);
     // need to be able to choose the formatselect from the menu drop down and apply it to 
     if (formatSelect === 'DOC') {
-        args = '-f markdown -t docx';
+        // res.set('Content-type', 'text/plain')
+        args = '-f markdown -t doc';
         callback = function (err, result) {
             if (err) {
                 console.error('ah shit here we go again: ',err);
             }
-            // console.log(result);
-            res.send(result)
+            console.log(result);
+            res.sendFile(result)
         }
         nodePandoc(src, args, callback);
     } else if (formatSelect === 'HTML') {
@@ -61,5 +62,3 @@ app.post('/download', function(req,res){
 // what port the local host is running on
 app.listen(1337)
 console.log('listening on port 1337...')
-
-// res.end or res.send sends something to the browser res.send can send multiple times, res.end 
